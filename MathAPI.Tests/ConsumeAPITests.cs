@@ -1,5 +1,6 @@
 ﻿using APIClient;
 using MathAPI.Controllers;
+using MathAPI.Interface;
 using MathAPI.Model;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -16,14 +17,16 @@ namespace MathAPI.Tests
     [TestClass]
     public class ConsumeAPITests
     {
-        private Mock<IAPIHttpClient> _mockApiClient;
+        //private Mock<IAPIHttpClient> _mockApiClient;
         private ConsumeAPIController _controller;
+        private Mock<IConsumeAPI> _mockConsumeAPI;
 
         [TestInitialize]
         public void Setup()
         {
-            _mockApiClient = new Mock<IAPIHttpClient>();
-            _controller = new ConsumeAPIController(_mockApiClient.Object);
+           // _mockApiClient = new Mock<IAPIHttpClient>();
+            _mockConsumeAPI = new Mock<IConsumeAPI>();
+            _controller = new ConsumeAPIController(_mockConsumeAPI.Object);
         }
 
         [TestMethod]
@@ -34,7 +37,7 @@ namespace MathAPI.Tests
             var expectedResult = new { Id = 1, Name = "Test" };
             var responseString = JsonSerializer.Serialize(expectedResult);
 
-            _mockApiClient.Setup(client => client.GetAsync<object>(url))
+            _mockConsumeAPI.Setup(client => client.GetDataAsync<object>(url))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -55,7 +58,7 @@ namespace MathAPI.Tests
             var requestModel = new MyRequestModel { body = "test", title = "test", userId = 1 };
             var expectedResult = new MyResponseModel { body = "test", title = "test", userId = 1, id=101 };
 
-            _mockApiClient.Setup(client => client.SendAsync<MyResponseModel>(
+            _mockConsumeAPI.Setup(client => client.SendDataAsync<MyResponseModel>(
                 HttpMethod.Post,
                 It.IsAny<string>(),
                 It.IsAny<HttpContent>()))

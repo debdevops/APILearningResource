@@ -5,11 +5,11 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathAPI", "MathAPI\MathAPI.csproj", "{499EE7F6-CB96-4253-971C-6DBAF941DD3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathAPI.Tests", "MathAPI.Tests\MathAPI.Tests.csproj", "{173E3B5B-8D06-424D-9829-0D3D39F98BDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathAPI.Tests", "MathAPI.Tests\MathAPI.Tests.csproj", "{173E3B5B-8D06-424D-9829-0D3D39F98BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIClient", "APIClient\APIClient.csproj", "{9D66B309-A2A3-479D-9684-D92B76159DB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIClient", "APIClient\APIClient.csproj", "{9D66B309-A2A3-479D-9684-D92B76159DB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIClient.Tests", "APIClient.Tests\APIClient.Tests.csproj", "{FF0D5C31-BE44-47F2-9FC7-68E4905E89AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIClient.Tests", "APIClient.Tests\APIClient.Tests.csproj", "{FF0D5C31-BE44-47F2-9FC7-68E4905E89AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

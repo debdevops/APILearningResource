@@ -55,6 +55,8 @@ builder.Services.AddScoped<APIClient.IAPIHttpClient, APIClient.APIHttpClient>();
 // Register other services
 builder.Services.AddTransient<IMathCalculations, MathCalculations>();
 
+builder.Services.AddScoped<IConsumeAPI, ConsumeAPI>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

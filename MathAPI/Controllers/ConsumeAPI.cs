@@ -5,17 +5,18 @@ using System.Text.Json;
 using System.Text;
 using MathAPI.Model;
 using System.Reflection;
+using MathAPI.Interface;
 
 namespace MathAPI.Controllers
 {
     public class ConsumeAPIController : ControllerBase
     {
 
-        private readonly IAPIHttpClient _apiClient;
+        private readonly IConsumeAPI _consumeAPI;
 
-        public ConsumeAPIController(IAPIHttpClient apiHttpClient)
+        public ConsumeAPIController(IConsumeAPI consumeAPI)
         {
-            _apiClient = apiHttpClient;
+            _consumeAPI = consumeAPI;
         }
 
         [HttpGet]
@@ -23,7 +24,7 @@ namespace MathAPI.Controllers
         [ActionName("GetData")]
         public async Task<IActionResult> GeteData(string url)
         {
-            var result = await _apiClient.GetAsync<object>(url);
+            var result = await _consumeAPI.GetDataAsync<object>(url);
             return Ok(result);
         }
 
@@ -36,7 +37,7 @@ namespace MathAPI.Controllers
             // Serialize the request model to JSON
             var jsonContent = new StringContent(JsonSerializer.Serialize(myRequestModel), Encoding.UTF8, "application/json");
 
-            var result = await _apiClient.SendAsync<MyResponseModel>(HttpMethod.Post, url, jsonContent);
+            var result = await _consumeAPI.SendDataAsync<MyResponseModel>(HttpMethod.Post, url, jsonContent);
 
             return Ok(result);
         }
