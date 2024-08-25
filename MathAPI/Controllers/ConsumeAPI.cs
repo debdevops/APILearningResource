@@ -36,7 +36,7 @@ namespace MathAPI.Controllers
             // Serialize the request model to JSON
             var jsonContent = new StringContent(JsonSerializer.Serialize(myRequestModel), Encoding.UTF8, "application/json");
 
-            var result = await _apiClient.SendAsync<MyRequestModel>(HttpMethod.Post, url, jsonContent);
+            var result = await _apiClient.SendAsync<MyResponseModel>(HttpMethod.Post, url, jsonContent);
 
             return Ok(result);
         }
