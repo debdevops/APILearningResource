@@ -1,40 +1,8 @@
-//using APIClient;
-//using MathAPI.Class;
-//using MathAPI.Controllers;
-//using MathAPI.Interface;
-
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-
-//builder.Services.AddControllers();
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//builder.Services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
-//builder.Services.AddScoped<APIClient.APIHttpClient>();
-//builder.Services.AddTransient<IMathCalculations, MathCalculations>();
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseAuthorization();
-
-//app.MapControllers();
-
-//app.Run();
-
 using APIClient;
 using MathAPI.Class;
 using MathAPI.Controllers;
 using MathAPI.Interface;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +25,9 @@ builder.Services.AddTransient<IMathCalculations, MathCalculations>();
 
 builder.Services.AddScoped<IConsumeAPI, ConsumeAPI>();
 
+// Add Health Checks
+builder.Services.AddHealthChecks().AddCheck("Example Check", () => HealthCheckResult.Healthy("The check indicates a healthy result."));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,6 +40,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
 
