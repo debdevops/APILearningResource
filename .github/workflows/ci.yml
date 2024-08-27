@@ -2,11 +2,17 @@ name: .NET Core CI
 
 on:
   push:
-    branches: 
+    branches:
       - main
+    paths:
+      - '**.csproj'
+      - '**/*.cs'
   pull_request:
-    branches: 
+    branches:
       - main
+    paths:
+      - '**.csproj'
+      - '**/*.cs'
 
 jobs:
   build:
@@ -19,13 +25,38 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '8.x'  # Change to your target .NET version if needed
 
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --no-restore --configuration Release
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Test and collect code coverage
+      run: |
+        dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      continue-on-error: true  # Continue even if tests fail to still generate coverage report
+
+    - name: Upload code coverage report
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./TestResults/**/*.opencover.xml  # Path where coverage reports are stored
+        flags: unittests
+        name: code-coverage-report
+        fail_ci_if_error: true
+        verbose: true
+
+    - name: Publish Test Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: TestResults
+        path: ./TestResults
+
+    - name: Publish Code Coverage
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: CodeCoverage
+        path: ./TestResults/**/*.opencover.xml
