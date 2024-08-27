@@ -13,50 +13,30 @@ on:
     paths:
       - '**.csproj'
       - '**/*.cs'
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/checkout@v2
+      
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '8.x'  # Change to your target .NET version if needed
+        dotnet-version: 8.x
 
-    - name: Restore dependencies
+    - name: Install dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+    - name: Build the project
+      run: dotnet build --no-restore
 
-    - name: Test and collect code coverage
-      run: |
-        dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-      continue-on-error: true  # Continue even if tests fail to still generate coverage report
+    - name: Run tests and collect coverage
+      run: dotnet test --no-build --collect:"XPlat Code Coverage"
 
-    - name: Upload code coverage report
-      uses: codecov/codecov-action@v3
-      with:
-        files: ./TestResults/**/*.opencover.xml  # Path where coverage reports are stored
-        flags: unittests
-        name: code-coverage-report
-        fail_ci_if_error: true
-        verbose: true
-
-    - name: Publish Test Results
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: TestResults
-        path: ./TestResults
-
-    - name: Publish Code Coverage
-      if: success()
-      uses: actions/upload-artifact@v3
+    - name: Publish code coverage
+      uses: actions/upload-artifact@v2
       with:
         name: CodeCoverage
-        path: ./TestResults/**/*.opencover.xml
+        path: '**/coverage.opencover.xml'
