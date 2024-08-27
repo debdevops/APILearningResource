@@ -1,42 +1,36 @@
-name: .NET Core CI
+name: .NET Core CI Pipeline
 
 on:
   push:
     branches:
       - main
-    paths:
-      - '**.csproj'
-      - '**/*.cs'
   pull_request:
     branches:
       - main
-    paths:
-      - '**.csproj'
-      - '**/*.cs'
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 8.x
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: dotnet restore
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 8.x
 
-    - name: Build the project
-      run: dotnet build --no-restore
+      - name: Install dependencies
+        run: dotnet restore
 
-    - name: Run tests and collect coverage
-      run: dotnet test --no-build --collect:"XPlat Code Coverage"
+      - name: Build the project
+        run: dotnet build --no-restore
 
-    - name: Publish code coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: CodeCoverage
-        path: '**/coverage.opencover.xml'
+      - name: Run tests and collect coverage
+        run: dotnet test --no-build --collect:"XPlat Code Coverage"
+
+      - name: Publish code coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: CodeCoverage
+          path: '**/coverage.opencover.xml'
