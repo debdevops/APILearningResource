@@ -1,6 +1,7 @@
 using APIClient;
 using MathAPI.Class;
 using MathAPI.Controllers;
+using MathAPI.ExceptionHandler;
 using MathAPI.Interface;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
@@ -25,6 +26,9 @@ builder.Services.AddTransient<IMathCalculations, MathCalculations>();
 
 builder.Services.AddScoped<IConsumeAPI, ConsumeAPI>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 // Add Health Checks
 builder.Services.AddHealthChecks().AddCheck("Example Check", () => HealthCheckResult.Healthy("The check indicates a healthy result."));
 
@@ -36,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseAuthorization();
 
