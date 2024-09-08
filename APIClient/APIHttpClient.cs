@@ -28,12 +28,14 @@ namespace APIClient
         /// <typeparam name="T"></typeparam>
         /// <param name="url">The URL.</param>
         /// <returns></returns>
-        public async Task<T> GetAsync<T>(string url)
+        public async Task<T?> GetAsync<T>(string url)
         {
             var response = await _httpClientWrapper.GetAsync(url);
             string responseData = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<T>(responseData, options);
+            return !string.IsNullOrEmpty(responseData)
+                ? JsonSerializer.Deserialize<T>(responseData, options)
+                : default(T); // Use default(T) to return the default value for the type T
         }
 
         /// <summary>

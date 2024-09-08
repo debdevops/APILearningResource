@@ -21,7 +21,7 @@ namespace MathAPI.Controllers
         }
 
         [HttpGet]
-        [ActionName("AddNumbers")]
+        [ActionName("SubstractionNumbers")]
         [Route("Substraction")]
         public async Task<IActionResult> Substraction(int x, int y)
         {
@@ -30,7 +30,7 @@ namespace MathAPI.Controllers
         }
 
         [HttpGet]
-        [ActionName("Multiplication")]
+        [ActionName("MultiplicationNumbers")]
         [Route("Multiplication")]
         public async Task<IActionResult> Multiplication(int x, int y)
         {
@@ -39,20 +39,12 @@ namespace MathAPI.Controllers
         }
 
         [HttpGet]
-        [ActionName("Divide")]
+        [ActionName("DivideNumbers")]
         [Route("Divide")]
         public async Task<IActionResult> Divide(int x, int y)
         {
-            try
-            {
-                var result = await _mathCalculations.DivideAsync(x, y);
-                return Ok(result);
-            }
-            catch (DivideByZeroException)
-            {
-                return BadRequest("Cannot divide by zero.");
-            }
-            
+            var result = await _mathCalculations.DivideAsync(x, y);
+            return Ok(result);
         }
     }
 }
