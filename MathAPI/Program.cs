@@ -3,7 +3,11 @@ using MathAPI.Class;
 using MathAPI.Controllers;
 using MathAPI.ExceptionHandler;
 using MathAPI.Interface;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SampleDALEF.DbContext;
+using SampleDALEF.Repository;
+using SampleDALEF;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +29,15 @@ builder.Services.AddScoped<APIClient.IAPIHttpClient, APIClient.APIHttpClient>();
 builder.Services.AddTransient<IMathCalculations, MathCalculations>();
 
 builder.Services.AddScoped<IConsumeAPI, ConsumeAPI>();
+
+// Register DbContext
+builder.Services.AddDbContext<CentralDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register Repositories and Unit of Work
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
