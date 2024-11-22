@@ -35,7 +35,8 @@ namespace MathAPI.ExceptionHandler
         /// property contains the result of the handling operation.
         /// <see langword="true" /> if the exception was handled successfully; otherwise <see langword="false" />.
         /// </returns>
-        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, 
+                    Exception exception, CancellationToken cancellationToken)
         {
             _logger.LogError(exception, exception.Message);
             var problemDetails = new ProblemDetails
@@ -46,7 +47,8 @@ namespace MathAPI.ExceptionHandler
             };
             httpContext.Response.StatusCode = problemDetails.Status.Value;
 
-            await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+            await httpContext.Response.WriteAsJsonAsync(problemDetails, 
+                            cancellationToken);
             return true;
         }
     }
