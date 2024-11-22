@@ -28,6 +28,8 @@ namespace MathAPI.Controllers
             return Ok(result);
         }
 
+        
+
         [HttpPost]
         [ActionName("SendData")]
         [Route("SendData")]
